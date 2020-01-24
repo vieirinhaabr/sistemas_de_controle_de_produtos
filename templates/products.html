@@ -2,8 +2,23 @@
 
 {% block body %}
     <h1>Produtos</h1>
+    {% from "includes/_formhelpers.html" import render_field %}
     <br>
     <a class="btn btn-success" href="/add_product"> Adicionar Produto </a>
+    <br>
+    <br>
+    <div class="form-group">
+        <form method="POST" action="">
+            <div class="row">
+                <div class="col-sm-8">
+                    {{render_field(form.search, class_="form-control")}}
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" style="margin-top: 10%;" class="btn btn-primary">Pesquisar</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <br><br>
     <table class="table table-striped">
         <tr>

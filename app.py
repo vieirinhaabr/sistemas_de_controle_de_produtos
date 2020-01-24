@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from API.DBConnector import DataBaseController
-from wtforms import Form, StringField, TextAreaField, PasswordField, validators
+from wtforms import Form, StringField, TextAreaField, validators
 
 app = Flask(__name__)
 
@@ -14,15 +14,23 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route('/products')
+@app.route('/products', methods=['GET', 'POST'])
 def products():
+    form = SearchForm(request.form)
     Products = dbconnector.get_products()
 
+    if request.method == 'POST' and form.validate():
+        search = form.search.data
+
+        result = dbconnector.search_by_name(search)
+
+        return render_template('products.html',  products = result, form = form)
+
     if len(Products) > 0:
-        return render_template('products.html', products = Products)
+        return render_template('products.html', products = Products, form = form)
     else:
         msg = 'Nenhum produto encontrado'
-        return render_template('products.html', msg = msg)
+        return render_template('products.html', msg = msg, form = form)
 
 @app.route('/product/<string:id>/')
 def product(id):
@@ -34,6 +42,9 @@ class ProductForm(Form):
     description = TextAreaField('Descrição')
     price = TextAreaField('Preço')
     amount = TextAreaField('Quantidade')
+
+class SearchForm(Form):
+    search = StringField('Pesquisar Produtos')
 
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -50,7 +61,7 @@ def add_product():
 
         return redirect(url_for('products'))
 
-    return render_template('add_product.html', form=form)
+    return render_template('add_product.html', form = form)
 
 @app.route('/edit_product/<string:id>', methods=['GET', 'POST'])
 def edit_article(id):
