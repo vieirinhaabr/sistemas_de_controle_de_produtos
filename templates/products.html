@@ -2,10 +2,31 @@
 
 {% block body %}
     <h1>Produtos</h1>
-    <ul class="list-group">
-        <li class="list-group-item"> Lista de Produtos </li>
+    <br>
+    <a class="btn btn-success" href="/add_product"> Adicionar Produto </a>
+    <br><br>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Preço</th>
+            <th>Quantidade</th>
+            <th></th>
+            <th></th>
+        </tr>
         {% for product in products %}
-            <li class="list-group-item"><a href="product/{{product[0]}}"> {{product[1]}} </a>  |  {{product[2]}}</li>
+            <tr>
+                <td><a href="product/{{product[0]}}"> {{product[0]}} </a></td>
+                <td>{{product[1]}}</td>
+                <td>{{product[2]}}</td>
+                <td>{{product[3]}}</td>
+                <td>{{product[4]}}</td>
+                <td><a href="edit_product/{{product[0]}}" class="btn btn-default pull-right">Editar</a></td>
+                <td>
+                
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
 {% endblock %}

@@ -7,6 +7,6 @@ create table PRODUCTS(ID INT NOT NULL auto_increment primary KEY,
 						NAME varchar(50),
                         DESCRIPTION varchar(300),
                         PRICE float,
-                        AMOUNT tinyint);
+                        AMOUNT INT);
                         
 select * from PRODUCTS;
