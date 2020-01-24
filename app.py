@@ -1,6 +1,6 @@
 from flask import Flask, render_template, flash, redirect, url_for, request
 from API.DBConnector import DataBaseController
-from wtforms import Form, StringField, TextAreaField, validators
+from wtforms import Form, StringField, TextAreaField, validators, FloatField, IntegerField
 
 app = Flask(__name__)
 
@@ -40,8 +40,8 @@ def product(id):
 class ProductForm(Form):
     name = StringField('Nome')
     description = TextAreaField('Descrição')
-    price = TextAreaField('Preço')
-    amount = TextAreaField('Quantidade')
+    price = FloatField('Preço', [validators.Required("Insira somente números e use . para separar valores")])
+    amount = IntegerField('Quantidade', [validators.Required("Insira somente números inteiros")])
 
 class SearchForm(Form):
     search = StringField('Pesquisar Produtos')
