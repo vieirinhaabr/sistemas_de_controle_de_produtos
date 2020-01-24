@@ -1,9 +1,9 @@
 from flask import Flask, render_template
-from data import Products
+from API.DBConnector import DataBaseController
 
 app = Flask(__name__)
 
-Products = Products()
+dbconnector = DataBaseController()
 
 @app.route('/')
 def index():
@@ -15,11 +15,18 @@ def about():
 
 @app.route('/products')
 def products():
-    return render_template('products.html', products = Products)
+    Products = dbconnector.get_products()
+
+    if len(Products) > 0:
+        return render_template('products.html', products = Products)
+    else:
+        msg = 'Nenhum produto encontrado'
+        return render_template('products.html', msg = msg)
 
 @app.route('/product/<string:id>/')
 def product(id):
-    return render_template('product.html', id = id)
+    Product = dbconnector.search_by_id(id)
+    return render_template('product.html', product = Product[0])
 
 if __name__ == '__main__':
     app.run(debug=True)

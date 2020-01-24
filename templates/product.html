@@ -1,5 +1,9 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <h1>Produto {{id}}</h1>
+    <h1>Produto | {{product[1]}}</h1>
+    <br>
+    <h4>Descrição: {{product[2]}}</h4>
+    <h4>Preço: {{product[3]}}</h4>
+    <h4>Quantidade: {{product[4]}}</h4>
 {% endblock %}

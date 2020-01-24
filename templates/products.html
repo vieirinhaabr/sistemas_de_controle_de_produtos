@@ -3,8 +3,9 @@
 {% block body %}
     <h1>Produtos</h1>
     <ul class="list-group">
+        <li class="list-group-item"> Lista de Produtos </li>
         {% for product in products %}
-            <li class="list-group-item"><a href="product/{{product.id}}"> {{product.name}} </a></li>
+            <li class="list-group-item"><a href="product/{{product[0]}}"> {{product[1]}} </a>  |  {{product[2]}}</li>
         {% endfor %}
     </ul>
 {% endblock %}

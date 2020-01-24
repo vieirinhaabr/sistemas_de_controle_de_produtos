@@ -1,5 +1,4 @@
 drop database if exists scp;
-drop table if exists PRODUCTS;
 
 create database scp;
 use scp;
