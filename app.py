@@ -88,6 +88,14 @@ def edit_article(id):
 
     return render_template('edit_product.html', form=form)
 
+@app.route('/delete_product/<string:id>', methods=['GET', 'POST'])
+def delete_article(id):
+    dbconnector.delete(id)
+
+    flash('Produto Removido', 'success')
+
+    return redirect(url_for('products'))
+
 if __name__ == '__main__':
     app.config['SECRET_KEY'] = 'redsfsfsfsfis'
     app.run(debug=True)
