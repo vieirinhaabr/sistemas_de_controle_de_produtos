@@ -40,8 +40,8 @@ def product(id):
 class ProductForm(Form):
     name = StringField('Nome')
     description = TextAreaField('Descrição')
-    price = FloatField('Preço', [validators.Required("Insira somente números e use . para separar valores")])
-    amount = IntegerField('Quantidade', [validators.Required("Insira somente números inteiros")])
+    price = FloatField('Preço', [validators.DataRequired("Insira somente números e use . para separar valores")])
+    amount = IntegerField('Quantidade', [validators.DataRequired("Insira somente números inteiros")])
 
 class SearchForm(Form):
     search = StringField('Pesquisar Produtos')
