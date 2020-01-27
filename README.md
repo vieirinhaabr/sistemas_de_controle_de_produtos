@@ -1,5 +1,10 @@
 # Sistema de controle de produtos
 
+## Pacotes necessários
+ - mysql-connector-python
+ - Wtforms
+ - flask
+
 ## Utilização da API
  - Ao iniciar o objeto da classe 'DataBaseController', devem ser definidos os parâmetros a seguir, que por padrão recebem os seguintes valores caso não especificados:
 "user='root', password='root', host='localhost', database='scp'"

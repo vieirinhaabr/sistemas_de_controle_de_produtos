@@ -1,5 +1,4 @@
 import mysql.connector
-from mysql.connector import errorcode
 
 class DataBaseController():
     def __init__(self, user='root', password='root', host='localhost', database='scp'):
@@ -12,8 +11,8 @@ class DataBaseController():
 
     def __start_conn(self):
         try:
-            self.__cnx = mysql.connector.connect(user= self.__user, password= self.__password,
-                                                host= self.__host, database= self.__database)
+            self.__cnx = mysql.connector.connect(user=self.__user, password=self.__password,
+                                                 host=self.__host, database=self.__database)
             self.__cursor = self.__cnx.cursor()
         
         except Exception as e:
