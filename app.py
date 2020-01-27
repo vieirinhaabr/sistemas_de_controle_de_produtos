@@ -17,12 +17,14 @@ def about():
 @app.route('/products', methods=['GET', 'POST'])
 def products():
     form = SearchForm(request.form)
-    Products = dbconnector.get_products()
+    with dbconnector:
+        Products = dbconnector.get_products()
 
     if request.method == 'POST' and form.validate():
         search = form.search.data
 
-        result = dbconnector.search_by_name(search)
+        with dbconnector:
+            result = dbconnector.search_by_name(search)
 
         return render_template('products.html',  products = result, form = form)
 
@@ -34,7 +36,8 @@ def products():
 
 @app.route('/product/<string:id>/')
 def product(id):
-    Product = dbconnector.search_by_id(id)
+    with dbconnector:
+        Product = dbconnector.search_by_id(id)
     return render_template('product.html', product = Product[0])
 
 class ProductForm(Form):
@@ -55,9 +58,10 @@ def add_product():
         price = form.price.data
         amount = form.amount.data
 
-        dbconnector.create(name, description, price, amount)
+        with dbconnector:
+            dbconnector.create(name, description, price, amount)
 
-        flash('Produto salvo', 'success')
+            flash('Produto salvo', 'success')
 
         return redirect(url_for('products'))
 
@@ -65,7 +69,8 @@ def add_product():
 
 @app.route('/edit_product/<string:id>', methods=['GET', 'POST'])
 def edit_article(id):
-    Product = dbconnector.search_by_id(id)
+    with dbconnector:
+        Product = dbconnector.search_by_id(id)
     Product = Product[0]
 
     form = ProductForm(request.form)
@@ -80,9 +85,10 @@ def edit_article(id):
         price = request.form['price']
         amount = request.form['amount']
 
-        dbconnector.update(Product[0], name, description, price, amount)
+        with dbconnector:
+            dbconnector.update(Product[0], name, description, price, amount)
 
-        flash('Produto atualizado', 'success')
+            flash('Produto atualizado', 'success')
 
         return redirect(url_for('products'))
 
@@ -90,9 +96,10 @@ def edit_article(id):
 
 @app.route('/delete_product/<string:id>', methods=['GET', 'POST'])
 def delete_article(id):
-    dbconnector.delete(id)
+    with dbconnector:
+        dbconnector.delete(id)
 
-    flash('Produto Removido', 'success')
+        flash('Produto Removido', 'success')
 
     return redirect(url_for('products'))
 
