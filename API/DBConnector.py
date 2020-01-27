@@ -19,7 +19,7 @@ class DataBaseController:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.__cnx.close()
 
-    def create(self, name: str, description: str, price: float, amount: int):
+    def create(self, name: str, description: str, price: float, amount: int) -> None:
         try:
             if len(self.__search_by_specific_name(name)) == 0:
                 command = "INSERT INTO PRODUCTS (NAME, DESCRIPTION, PRICE, AMOUNT) VALUES (%s ,%s ,%s ,%s)"
@@ -35,7 +35,7 @@ class DataBaseController:
         finally:
             self.__cursor.close()
 
-    def delete(self, id: int):
+    def delete(self, id: int) -> None:
         try:
             command = "DELETE FROM PRODUCTS WHERE ID = " + str(id)
             self.__cursor.execute(command)
@@ -47,7 +47,7 @@ class DataBaseController:
         finally:
             self.__cursor.close()
 
-    def update(self, id: int, name: str, description: str, price: float, amount: int):
+    def update(self, id: int, name: str, description: str, price: float, amount: int) -> None:
         try:
             command = "UPDATE PRODUCTS SET NAME = %s, DESCRIPTION = %s, PRICE = %s, AMOUNT = %s WHERE ID = %s"
             self.__cursor.execute(command, (name, description, price, amount, id))
@@ -59,7 +59,7 @@ class DataBaseController:
         finally:
             self.__cursor.close()
 
-    def search_by_name(self, name: str):
+    def search_by_name(self, name: str) -> list:
         try:
             name = '%' + name + '%'
             command = "SELECT * FROM PRODUCTS WHERE NAME LIKE '" + name + "'"
@@ -75,7 +75,7 @@ class DataBaseController:
         finally:
             self.__cursor.close()
 
-    def __search_by_specific_name(self, name: str):
+    def __search_by_specific_name(self, name: str) -> list:
         try:
             command = "SELECT * FROM PRODUCTS WHERE NAME LIKE '" + name + "'"
             self.__cursor.execute(command)
@@ -87,7 +87,7 @@ class DataBaseController:
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
 
-    def search_by_id(self, id: int):
+    def search_by_id(self, id: int) -> list:
         try:
             command = "SELECT * FROM PRODUCTS WHERE ID = " + str(id)
             self.__cursor.execute(command)
@@ -102,7 +102,7 @@ class DataBaseController:
         finally:
             self.__cursor.close()
 
-    def get_products(self):
+    def get_products(self) -> list:
         try:
             command = "SELECT * FROM PRODUCTS"
             self.__cursor.execute(command)
