@@ -2,130 +2,130 @@ import mysql.connector
 from mysql.connector import errorcode
 
 class DataBaseController():
-    user = None
-    password = None
-    host = None
-    database = None
-
     def __init__(self, user='root', password='root', host='localhost', database='scp'):
-        self.user = user
-        self.password = password
-        self.host = host
-        self.database = database
+        self._user = user
+        self._password = password
+        self._host = host
+        self._database = database
+        self._cursor = None
+        self._cnx = None
+
+    def _start_conn(self):
+        try:
+            self._cnx = mysql.connector.connect(user= self._user, password= self._password,
+                                                host= self._host, database= self._database)
+            self._cursor = self._cnx.cursor()
+        
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
+
+    def _end_conn(self):
+        try:
+            self._cursor.close()
+            self._cnx.close()
+
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
 
     def create(self, name, description, price, amount):
         try:
-            cnx = mysql.connector.connect(user= self.user, password= self.password,
-                                          host= self.host, database= self.database)
-            cursor = cnx.cursor()
-
-            if len(self.search_by_name(name)) == 0:
+            if len(self.search_by_specific_name(name)) == 0:
+                self._start_conn()
+                
                 command = "INSERT INTO PRODUCTS (NAME, DESCRIPTION, PRICE, AMOUNT) VALUES (%s ,%s ,%s ,%s)"
-                cursor.execute(command, (name, description, price, amount))
+                self._cursor.execute(command, (name, description, price, amount))
+                self._cnx.commit()
 
-                cnx.commit()
-
-                cursor.close()
-                cnx.close()
-
+                self._end_conn()
             else:
-                return False
+                print("Não foi possivel criar, ja possui outro com mesmo nome")
 
-            return True
-
-        except mysql.connector.Error as err:
-            return False
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
     
     def delete(self, id):
         try:
-            cnx = mysql.connector.connect(user= self.user, password= self.password,
-                                          host= self.host, database= self.database)
-            cursor = cnx.cursor()
+            self._start_conn()
 
             command = "DELETE FROM PRODUCTS WHERE ID = " + str(id)
-            cursor.execute(command)
+            self._cursor.execute(command)
+            self._cnx.commit()
 
-            cnx.commit()
+            self._end_conn()
 
-            cursor.close()
-            cnx.close()
-            return True
-
-        except mysql.connector.Error:
-            return False
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
 
     def update(self, id, name, description, price, amount):
         try:
-            cnx = mysql.connector.connect(user= self.user, password= self.password,
-                                          host= self.host, database= self.database)
-            cursor = cnx.cursor()
+            self._start_conn()
 
             command = "UPDATE PRODUCTS SET NAME = %s, DESCRIPTION = %s, PRICE = %s, AMOUNT = %s WHERE ID = %s"
-            cursor.execute(command, (name, description, price, amount, id))
+            self._cursor.execute(command, (name, description, price, amount, id))
+            self._cnx.commit()
 
-            cnx.commit()
+            self._end_conn()
 
-            cursor.close()
-            cnx.close()
-            return True
-
-        except mysql.connector.Error:
-            return False
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
     
     def search_by_name(self, name):
         try:
-            cnx = mysql.connector.connect(user= self.user, password= self.password,
-                                          host= self.host, database= self.database)
-            cursor = cnx.cursor(buffered=True)
+            self._start_conn()
 
             name = '%' + name + '%'
             command = "SELECT * FROM PRODUCTS WHERE NAME LIKE '" + name + "'"
-            cursor.execute(command)
-            result = cursor.fetchall()
+            self._cursor.execute(command)
+            result = self._cursor.fetchall()
+            self._cnx.commit()
 
-            cnx.commit()
-
-            cursor.close()
-            cnx.close()
+            self._end_conn()
             return result
 
-        except mysql.connector.Error:
-            return False
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
+
+    def search_by_specific_name(self, name):
+        try:
+            self._start_conn()
+
+            command = "SELECT * FROM PRODUCTS WHERE NAME LIKE '" + name + "'"
+            self._cursor.execute(command)
+            result = self._cursor.fetchall()
+            self._cnx.commit()
+
+            self._end_conn()
+            return result
+
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
 
     def search_by_id(self, id):
         try:
-            cnx = mysql.connector.connect(user= self.user, password= self.password,
-                                          host= self.host, database= self.database)
-            cursor = cnx.cursor()
+            self._start_conn()
 
             command = "SELECT * FROM PRODUCTS WHERE ID = " + str(id)
-            cursor.execute(command)
-            result = cursor.fetchall()
+            self._cursor.execute(command)
+            result = self._cursor.fetchall()
+            self._cnx.commit()
 
-            cnx.commit()
-
-            cursor.close()
-            cnx.close()
+            self._end_conn()
             return result
 
-        except mysql.connector.Error:
-            return False
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
     
     def get_products(self):
         try:
-            cnx = mysql.connector.connect(user= self.user, password= self.password,
-                                          host= self.host, database= self.database)
-            cursor = cnx.cursor()
+            self._start_conn()
 
             command = "SELECT * FROM PRODUCTS"
-            cursor.execute(command)
-            products = cursor.fetchall()
-
-            cnx.commit()
-
-            cursor.close()
-            cnx.close()
+            self._cursor.execute(command)
+            products = self._cursor.fetchall()
+            self._cnx.commit()
+            
+            self._end_conn()
             return products
 
-        except mysql.connector.Error:
-            return False
+        except Exception as e:
+            print("Ocorreu o seguinte erro --------> {}".format(e))
