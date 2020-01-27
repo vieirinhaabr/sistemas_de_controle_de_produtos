@@ -26,7 +26,7 @@ class DataBaseController():
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
 
-    def create(self, name, description, price, amount):
+    def create(self, name: str, description: str, price: float, amount: int):
         try:
             if len(self.search_by_specific_name(name)) == 0:
                 self.__start_conn()
@@ -42,7 +42,7 @@ class DataBaseController():
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
     
-    def delete(self, id):
+    def delete(self, id: int):
         try:
             self.__start_conn()
 
@@ -55,7 +55,7 @@ class DataBaseController():
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
 
-    def update(self, id, name, description, price, amount):
+    def update(self, id: int, name: str, description: str, price: float, amount: int):
         try:
             self.__start_conn()
 
@@ -68,7 +68,7 @@ class DataBaseController():
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
     
-    def search_by_name(self, name):
+    def search_by_name(self, name: str):
         try:
             self.__start_conn()
 
@@ -84,7 +84,7 @@ class DataBaseController():
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
 
-    def search_by_specific_name(self, name):
+    def search_by_specific_name(self, name: str):
         try:
             self.__start_conn()
 
@@ -99,7 +99,7 @@ class DataBaseController():
         except Exception as e:
             print("Ocorreu o seguinte erro --------> {}".format(e))
 
-    def search_by_id(self, id):
+    def search_by_id(self, id: int):
         try:
             self.__start_conn()
 
