@@ -65,7 +65,6 @@ class DataBaseController:
             command = "SELECT * FROM PRODUCTS WHERE NAME LIKE '" + name + "'"
             self.__cursor.execute(command)
             result = self.__cursor.fetchall()
-            self.__cnx.commit()
 
             return result
 
@@ -80,7 +79,6 @@ class DataBaseController:
             command = "SELECT * FROM PRODUCTS WHERE NAME LIKE '" + name + "'"
             self.__cursor.execute(command)
             result = self.__cursor.fetchall()
-            self.__cnx.commit()
 
             return result
 
@@ -92,7 +90,6 @@ class DataBaseController:
             command = "SELECT * FROM PRODUCTS WHERE ID = " + str(id)
             self.__cursor.execute(command)
             result = self.__cursor.fetchall()
-            self.__cnx.commit()
 
             return result
 
@@ -107,7 +104,6 @@ class DataBaseController:
             command = "SELECT * FROM PRODUCTS"
             self.__cursor.execute(command)
             products = self.__cursor.fetchall()
-            self.__cnx.commit()
 
             return products
 
